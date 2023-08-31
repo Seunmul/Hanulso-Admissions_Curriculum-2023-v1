@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  server: # 이미지 이름 => 디렉토리명-사용자입력
+    build: # Dockerfile이 있는 경로를 넣어주기
+      # platforms:
+      #   - 'linux/amd64' # 플랫폼 정의
+      context: . # Dockerfile이 있는 경로
+      dockerfile: Dockerfile # Dockerfile 스크립트 파일 이름
+    container_name: hanulso_final_assignment_server
+    image: hanulso_final_assignment_server:latest
+    command: '/bin/bash' # docker compose up 실행 시 실행할 명령어
+    stdin_open: true # docker run -i 와 같음=>  Keep STDIN open even if not attached | 없으면 스크립트 전부 실행하고 멈춤 백그라운드 없이 멈춤
+    tty: true # docker run -t 와 같음 => Allocate a pseudo-TTY  | 없으면 스크립트 전부 실행하고 백그라운드 없이 멈춤
+    networks:
+      - hanulso_assignment
+    ports:
+    - '35000:22' # docker CLI의 "-p 3000:3000" 과 같은 표현
+    volumes:
+      - ./server:/share
+  
+  client: # 이미지 이름 => 디렉토리명-사용자입력
+    build: # Dockerfile이 있는 경로를 넣어주기
+      # platforms:
+      #   - 'linux/amd64' # 플랫폼 정의
+      context: . # Dockerfile이 있는 경로
+      dockerfile: Dockerfile # Dockerfile 스크립트 파일 이름
+    container_name: hanulso_final_assignment_client
+    image: hanulso_final_assignment_client:latest
+    command: '/bin/bash' # docker compose up 실행 시 실행할 명령어
+    stdin_open: true # docker run -i 와 같음=>  Keep STDIN open even if not attached | 없으면 스크립트 전부 실행하고 멈춤 백그라운드 없이 멈춤
+    tty: true # docker run -t 와 같음 => Allocate a pseudo-TTY  | 없으면 스크립트 전부 실행하고 백그라운드 없이 멈춤
+    networks:
+      - hanulso_assignment
+    ports:
+    - '35001:22' # docker CLI의 "-p 3000:3000" 과 같은 표현
+    volumes:
+      - ./client:/share
+networks:
+  hanulso_assignment:
+    driver: bridge
+# volumes:
+#   keys:
+# docker compose up
+
